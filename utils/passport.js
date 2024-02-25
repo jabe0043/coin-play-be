@@ -1,7 +1,7 @@
 "use strict";
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const passport = require("passport");
-const User = require("../models/authModel");
+const AuthUser = require("../models/authModel");
 
 const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_CALLBACK_URL } = process.env;
 
@@ -16,7 +16,7 @@ passport.use(
       const email = profile.emails[0].value;
 
       try {
-        const user = await User.findOneAndUpdate(
+        const user = await AuthUser.findOneAndUpdate(
           { googleId: profile.id },
           {
             $set: {
@@ -46,7 +46,7 @@ passport.serializeUser((user, cb) => {
 // get the full user from the id stored in the session
 passport.deserializeUser(async (id, cb) => {
   try {
-    const user = await User.findById(id);
+    const user = await AuthUser.findById(id);
     cb(null, user);
   } catch (error) {
     cb(error);

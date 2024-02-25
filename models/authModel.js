@@ -1,4 +1,3 @@
-"use strict";
 const { model, Schema } = require("mongoose");
 
 const authSchema = new Schema(
@@ -32,4 +31,4 @@ authSchema.set('toObject', {
 })
 
 
-module.exports = model("user", authSchema);
+module.exports = model("authenticatedUser", authSchema);

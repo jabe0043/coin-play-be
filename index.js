@@ -1,25 +1,35 @@
 'use strict'
 
 require("dotenv").config();
+const cors = require("cors");
 const express = require('express');
 const passport = require("passport");
 const MongoStore = require("connect-mongo");
 const session = require("express-session");
-//Application level middleware
+const helmet = require('helmet')
+const compression = require('compression')
+const sanitizeMongo = require('express-mongo-sanitize');
+const morgan = require("morgan");
+const { errorHandler } = require("./utils/errors");
+//-- Application level middleware
 const logMiddleware = require('./middlewares/logMiddleware')
 const isAuthenticated = require('./middlewares/isAuthenticated');
-//Application level routers
-const UserRouter = require('./routes/userRouter');
+//-- Application level routers
+const userRouter = require('./routes/userRouter');
 const authRouter = require("./routes/authRouter");
-
-const { errorHandler } = require("./utils/errors");
-
-
-
+//-- Mongo Connection
 require("./utils/mongoDb");
-const morgan = require('morgan');
-const app = express()
 
+
+const app = express()
+app.use(compression());
+app.use(helmet());
+app.use(sanitizeMongo());
+app.use(
+  cors({
+    origin: process.env.CORS_WHITELIST.split(","),
+  })
+);
 app.use(express.json());
 app.use(morgan('tiny'));
 
@@ -38,10 +48,6 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
-app.use((req, _res, next) => { //for logging authenticated user;
-  console.log('user', req.user)
-  next()
-})
 
 
 //-- Middleware setup
@@ -53,7 +59,7 @@ app.use(logMiddleware);
 // app.use('/user', isAuthenticated, UserRouter);
 app.get('/', (_req, res) => res.send('Hello World!'));
 app.use("/auth", authRouter);
-
+app.use('/user', isAuthenticated, userRouter)
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 3000;
