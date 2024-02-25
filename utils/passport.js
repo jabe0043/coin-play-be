@@ -1,5 +1,4 @@
 "use strict";
-
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const passport = require("passport");
 const User = require("../models/authModel");
@@ -14,12 +13,15 @@ passport.use(
       callbackURL: GOOGLE_CALLBACK_URL,
     },
     async (_accessToken, _refreshToken, profile, cb) => {
+      const email = profile.emails[0].value;
+
       try {
         const user = await User.findOneAndUpdate(
           { googleId: profile.id },
           {
             $set: {
               name: profile.displayName,
+              email: email,
               googleId: profile.id,
             },
           },

@@ -12,7 +12,7 @@ authRouter.get("/google", (req, res, next) => {
   debug("authRouter.get('/google')");
   const redirect_url = req.query.redirect_url;
   const authenticator = passport.authenticate("google", {
-    scope: ["profile"],
+    scope: ["profile", "email"],
     state: redirect_url,
   });
   authenticator(req, res, next);
@@ -28,7 +28,7 @@ authRouter.get(
     const id = req.user._id.toString();
     const token = jwt.sign({ id }, process.env.JWT_SECRET);
 
-    res.header('Access-Control-Allow-Origin', 'https://giftr-mj-jj.netlify.app, http://localhost:5173');
+    res.header('Access-Control-Allow-Origin', 'http://localhost:5173'); //TODO:
 
     res.redirect(`${redirectUrl}?token=${token}`);
   }
