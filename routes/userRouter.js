@@ -10,11 +10,9 @@ userRouter.post('/', async (req, res) => {
   try {
     // Try to retrieve the user document
     const authDocument = await AuthUser.findOne({ _id: userId });
-
     if (authDocument) {
       // Auth document found, use its data to create/update user document
       const userDocument = await User.findOne({ _id: userId });
-
       if (userDocument) {
         // User document already exists
         console.log('User document exists');

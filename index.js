@@ -15,8 +15,9 @@ const { errorHandler } = require("./utils/errors");
 const logMiddleware = require('./middlewares/logMiddleware')
 const isAuthenticated = require('./middlewares/isAuthenticated');
 //-- Application level routers
-const userRouter = require('./routes/userRouter');
 const authRouter = require("./routes/authRouter");
+const userRouter = require('./routes/userRouter');
+const userActionsRouter = require('./routes/userActionsRouter');
 //-- Mongo Connection
 require("./utils/mongoDb");
 
@@ -56,10 +57,10 @@ app.use(logMiddleware);
 
 
 //-- Routes setup
-// app.use('/user', isAuthenticated, UserRouter);
 app.get('/', (_req, res) => res.send('Hello World!'));
 app.use("/auth", authRouter);
 app.use('/user', isAuthenticated, userRouter)
+app.use('/user/actions', isAuthenticated, userActionsRouter);
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 3000;

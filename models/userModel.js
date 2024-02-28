@@ -33,7 +33,15 @@ const userSchema = new Schema(
     //-- Array of objects representing user's stock holdings
     holdings: [
       {
-        stock: {
+        coinId: {
+          type: String,
+          required: true,
+        },
+        coinName: {
+          type: String,
+          required: true,
+        },
+        coinSymbol:{
           type: String,
           required: true,
         },
@@ -49,6 +57,10 @@ const userSchema = new Schema(
           type: Date,
           default: Date.now,
         },
+        transactionId:{
+          type: String,
+          required: true,
+        }
       },
     ],
     //-- Array of stock symbols in the user's watchlist
