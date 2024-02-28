@@ -12,11 +12,23 @@ const userSchema = new Schema(
       type: Types.ObjectId,
       required: true,
     },
-    //-- The current balance of their account - default 10k
-    balance: {
-      type: Number,
-      default: 10000,
-      required: true,
+    //-- The account portfolio - Total balance, Available funds, Invested funds
+    portfolio: {
+      balance: {
+        type: Number,
+        default: 10000,
+        required: true,
+      },
+      invested: {
+        type: Number,
+        default: 0,
+        required: true,
+      },
+      available: {
+        type: Number,
+        default: 10000,
+        required: true,
+      },
     },
     //-- Array of objects representing user's stock holdings
     holdings: [
