@@ -30,8 +30,25 @@ const userSchema = new Schema(
         required: true,
       },
     },
-    //-- Array of objects representing user's stock holdings
+    //-- Array of objects representing user's holdings
     holdings: [
+      {
+        coin: {
+          type: String,
+          required: true,
+        },
+        totalHeld: {
+          type: Number,
+          required: true,
+        },
+        avgCostPerCoin: {
+          type: Number,
+          required: true,
+        },
+      },
+    ],
+    //-- Array of objects representing user's stock holdings
+    transactions: [
       {
         coinId: {
           type: String,
