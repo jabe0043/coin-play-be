@@ -33,7 +33,11 @@ const userSchema = new Schema(
     //-- Array of objects representing user's holdings
     holdings: [
       {
-        coin: {
+        coinName: {
+          type: String,
+          required: true,
+        },
+        coinSymbol: {
           type: String,
           required: true,
         },

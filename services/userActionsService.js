@@ -27,7 +27,7 @@ const buyCoin = async (userId, transactionInfo) => {
       const totalQty = transactionsForCoin.reduce((sum, transaction) => sum + transaction.qty, 0);
       const totalCost = transactionsForCoin.reduce((sum, transaction) => sum + transaction.price, 0);
       
-      const existingHolding = user.holdings.find((holding) => holding.coin === coinSymbol);
+      const existingHolding = user.holdings.find((holding) => holding.coinSymbol === coinSymbol);
       
       if (existingHolding) {
         // Update existing holding
@@ -36,7 +36,8 @@ const buyCoin = async (userId, transactionInfo) => {
       } else {
         // Add new holding
         user.holdings.push({
-          coin: coinSymbol,
+          coinName: coinName,
+          coinSymbol: coinSymbol,
           totalHeld: totalQty,
           avgCostPerCoin: totalQty > 0 ? totalCost / totalQty : 0,
         });
